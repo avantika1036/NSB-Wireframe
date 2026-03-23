@@ -4,7 +4,7 @@ Interactive wireframe prototype for the **Network Simulation Bridge (NSB)** webs
 
 ## 🔗 Live Preview
 
-👉 [avantika1036.github.io/NSB-Wireframe](https://avantika1036.github.io/NSB-Wireframe/)
+[avantika1036.github.io/NSB-Wireframe](https://avantika1036.github.io/NSB-Wireframe/)
 
 ## About This Prototype
 
