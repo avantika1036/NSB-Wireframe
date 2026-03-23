@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSB Website — Mid-Fidelity Wireframes · GSoC 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   RESET & TOKENS
+══════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --white:#ffffff;
+  --g50:#fafaf9;
+  --g100:#f4f4f2;
+  --g200:#e8e8e4;
+  --g300:#d0d0ca;
+  --g400:#9a9a94;
+  --g500:#6b6b65;
+  --g600:#4a4a45;
+  --g700:#2e2e2a;
+  --g800:#141412;
+  --black:#000000;
+  --accent:#1a56db;
+  --accent-light:#e8effd;
+  --border:#e0e0da;
+  --sans:'Inter',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --display:'Outfit',sans-serif;
+  --nav-h:60px;
+  --sidebar-w:240px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--g100);color:var(--g800);font-size:15px;line-height:1.65;display:flex;min-height:100vh}
+
+/* ══════════════════════════════════════════
+   LEFT SIDEBAR NAVIGATION (from v1)
+══════════════════════════════════════════ */
+.left-nav{
+  width:var(--sidebar-w);
+  flex-shrink:0;
+  background:var(--g800);
+  border-right:none;
+  position:fixed;
+  top:0;left:0;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow-y:hidden;
+  z-index:200;
+}
+.left-nav-logo{
+  padding:22px 20px 18px;
+  font-family:var(--display);
+  font-size:16px;font-weight:700;
+  color:var(--white);letter-spacing:-0.3px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  display:flex;flex-direction:column;gap:4px;
+}
+.left-nav-logo .sub{
+  font-size:10px;font-weight:400;color:rgba(255,255,255,0.4);
+  letter-spacing:1.2px;text-transform:uppercase;font-family:var(--mono);
+}
+.left-nav-section{
+  padding:18px 20px 6px;
+  font-size:10px;font-weight:600;
+  color:rgba(255,255,255,0.35);letter-spacing:1.2px;text-transform:uppercase;
+  font-family:var(--mono);
+}
+.left-nav-item{
+  display:block;padding:9px 20px;
+  font-size:13px;color:rgba(255,255,255,0.55);
+  cursor:pointer;border:none;background:none;
+  text-align:left;width:100%;
+  border-left:3px solid transparent;
+  transition:all 0.15s;font-family:var(--sans);font-weight:500;
+}
+.left-nav-item:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85)}
+.left-nav-item.active{
+  background:rgba(255,255,255,0.1);color:var(--white);font-weight:600;
+  border-left-color:var(--white);
+}
+.left-nav-item .step-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;border-radius:50%;
+  background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);
+  font-family:var(--mono);font-size:10px;font-weight:700;
+  margin-right:9px;flex-shrink:0;
+}
+.left-nav-item.active .step-num{background:var(--white);color:var(--g800)}
+.left-nav-footer{
+  margin-top:auto;padding:16px 20px;
+  border-top:1px solid rgba(255,255,255,0.08);
+  font-size:11px;color:rgba(255,255,255,0.3);font-family:var(--mono);
+  line-height:1.7;
+}
+
+/* ══════════════════════════════════════════
+   MAIN AREA
+══════════════════════════════════════════ */
+.main{
+  margin-left:var(--sidebar-w);
+  flex:1;
+  min-height:100vh;
+}
+
+/* ── Top meta bar ── */
+.meta-bar{
+  position:sticky;top:0;z-index:100;
+  background:var(--white);color:var(--g800);
+  padding:0 32px;height:52px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--mono);font-size:12px;
+  border-bottom:1px solid var(--border);
+  box-shadow:0 1px 3px rgba(0,0,0,0.06);
+}
+.meta-bar-title{color:var(--g500);font-size:12px}
+.meta-pills{display:flex;gap:4px}
+.meta-pill{
+  background:var(--g100);color:var(--g500);
+  padding:5px 12px;border-radius:6px;font-size:11px;
+  cursor:pointer;border:1px solid var(--border);font-family:var(--mono);
+  transition:all 0.15s;font-weight:500;
+}
+.meta-pill:hover,.meta-pill.active{background:var(--g800);color:var(--white);border-color:var(--g800)}
+
+/* ── Screen container ── */
+.screen{display:none}
+.screen.active{display:block}
+
+/* ══════════════════════════════════════════
+   BROWSER CHROME WRAPPER
+══════════════════════════════════════════ */
+.screen-wrap{padding:28px 36px 48px}
+.screen-desc-block{margin-bottom:24px;padding:20px 24px;background:var(--white);border:1px solid var(--border);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.screen-tag{
+  font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);
+  background:var(--accent-light);border:none;
+  padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px;
+}
+.screen-title{font-size:22px;font-weight:700;color:var(--g800);margin-bottom:6px;letter-spacing:-0.4px;font-family:var(--display)}
+.screen-meta-row{display:flex;gap:28px;flex-wrap:wrap}
+.screen-meta-row span{font-size:13px;color:var(--g500);line-height:1.6}
+.screen-meta-row strong{color:var(--g700);font-weight:600}
+
+.browser-wrap{
+  background:var(--g200);border-radius:12px;
+  padding:4px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.12),0 2px 8px rgba(0,0,0,0.06);
+}
+.browser-bar{
+  background:var(--g100);border-radius:9px 9px 0 0;
+  padding:10px 16px;display:flex;align-items:center;gap:6px;
+  border-bottom:1px solid var(--g200);
+}
+.b-dot{width:10px;height:10px;border-radius:50%;background:var(--g300)}
+.b-dot:nth-child(1){background:#ff5f57}
+.b-dot:nth-child(2){background:#ffbd2e}
+.b-dot:nth-child(3){background:#28c840}
+.b-url{
+  flex:1;background:var(--white);border-radius:6px;
+  padding:5px 14px;margin-left:10px;
+  font-family:var(--mono);font-size:12px;color:var(--g500);
+  border:1px solid var(--g200);
+}
+.browser-body{background:var(--white);border-radius:0 0 9px 9px;overflow:hidden}
+
+.ann{
+  margin-top:12px;
+  font-family:var(--mono);font-size:11px;color:var(--g500);
+  background:var(--white);border:1px solid var(--border);
+  border-left:3px solid var(--accent);
+  padding:10px 14px;border-radius:0 6px 6px 0;
+}
+.ann strong{color:var(--g600)}
+
+/* ══════════════════════════════════════════
+   SHARED WIREFRAME COMPONENTS
+══════════════════════════════════════════ */
+
+/* ── Simulated nav bar ── */
+.wf-nav{
+  background:var(--white);border-bottom:1.5px solid var(--g800);
+  height:var(--nav-h);display:flex;align-items:center;padding:0 32px;gap:0;
+}
+.wf-logo{
+  font-family:var(--display);font-size:17px;font-weight:700;
+  color:var(--g800);margin-right:36px;
+}
+.wf-nav-links{display:flex;gap:2px}
+.wf-nav-link{
+  font-size:14px;color:var(--g500);padding:6px 14px;
+  border-radius:6px;font-weight:500;
+}
+.wf-nav-link.on{color:var(--g800);background:var(--g100);font-weight:600}
+.wf-nav-right{display:flex;gap:8px;margin-left:auto;align-items:center}
+.wf-btn-ghost{
+  font-size:13px;color:var(--g600);padding:6px 14px;
+  border:1.5px solid var(--g300);border-radius:6px;font-weight:500;
+}
+.wf-btn-fill{
+  font-size:13px;color:var(--white);background:var(--g800);
+  padding:6px 16px;border-radius:6px;font-weight:600;
+}
+/* ── Section header strip ── */
+.page-header{
+  padding:32px 44px 26px;border-bottom:1px solid var(--border);
+  background:var(--g50);
+}
+.page-header .breadcrumb{
+  font-family:var(--mono);font-size:11px;color:var(--g400);margin-bottom:10px;
+}
+.page-title{font-size:24px;font-weight:700;color:var(--g800);margin-bottom:4px;letter-spacing:-0.4px;font-family:var(--display)}
+.page-subtitle{font-size:14px;color:var(--g500)}
+
+/* ── Buttons ── */
+.btn-fill{
+  display:inline-block;background:var(--g800);color:var(--white);
+  font-size:14px;font-weight:600;padding:10px 22px;border-radius:7px;cursor:pointer;border:none;
+}
+.btn-outline{
+  display:inline-block;background:var(--white);color:var(--g700);
+  font-size:14px;font-weight:600;padding:10px 22px;border-radius:7px;
+  border:1.5px solid var(--g300);cursor:pointer;
+}
+
+/* ── Code block ── */
+.code-block{
+  background:var(--g800);border:none;border-radius:8px;
+  overflow:hidden;margin:12px 0;
+}
+.code-bar{
+  background:rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.1);
+  padding:8px 16px;display:flex;justify-content:space-between;align-items:center;
+}
+.code-bar span{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.4)}
+.copy-btn{
+  font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.5);
+  border:1px solid rgba(255,255,255,0.15);background:none;padding:3px 10px;
+  border-radius:4px;cursor:pointer;
+}
+.copy-btn:hover{border-color:rgba(255,255,255,0.4);color:rgba(255,255,255,0.8)}
+pre{
+  padding:16px 20px;font-family:var(--mono);font-size:12px;
+  line-height:1.9;color:rgba(255,255,255,0.85);overflow-x:auto;
+}
+
+/* ── Verify hint ── */
+.verify{
+  background:var(--g50);border:1px solid var(--border);
+  border-left:3px solid var(--accent);
+  border-radius:0 6px 6px 0;
+  padding:10px 14px;font-size:13px;color:var(--g600);margin:10px 0;
+}
+.note{
+  background:var(--g50);border:1px solid var(--border);
+  padding:10px 14px;font-size:13px;color:var(--g600);
+  border-radius:6px;margin:10px 0;
+}
+
+/* ── Tags ── */
+.tag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:0.5px}
+.tag-req{background:var(--g200);color:var(--g700)}
+.tag-opt{background:var(--g100);color:var(--g500)}
+.tag-beginner{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+.tag-intermediate{background:#fffbeb;color:#92400e;border:1px solid #fcd34d}
+.tag-advanced{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5}
+
+/* ══════════════════════════════════════════
+   SCREEN 0 — USER FLOW
+══════════════════════════════════════════ */
+#flow .screen-wrap{padding:28px 36px 48px}
+.flow-canvas{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:10px;padding:36px 40px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.04);
+}
+.flow-section-title{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:1.2px;color:var(--g400);font-family:var(--mono);
+  margin-bottom:22px;
+}
+.flow-primary{display:flex;flex-direction:column;gap:0;margin-bottom:28px}
+.flow-row{display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
+.flow-node{
+  background:var(--white);border:1.5px solid var(--g300);
+  padding:10px 18px;border-radius:7px;
+  font-size:13px;font-weight:500;white-space:nowrap;color:var(--g700);
+}
+.flow-node.dark{background:var(--g800);color:var(--white);border-color:var(--g800)}
+.flow-node.bold{border:2px solid var(--g800);font-weight:700;color:var(--g800)}
+.flow-node.success{
+  background:var(--g50);border:2px solid var(--g800);
+  font-weight:700;color:var(--g800);
+}
+.flow-node.success::after{
+  content:'CHECKPOINT';
+  display:block;font-family:var(--mono);font-size:9px;
+  font-weight:700;letter-spacing:1px;color:var(--g400);margin-top:3px;
+}
+.flow-arr{color:var(--g300);font-size:16px;flex-shrink:0}
+.flow-down{width:1px;height:24px;background:var(--g300);margin-left:22px}
+.flow-indent{padding-left:36px}
+.flow-branch{
+  border-left:1px dashed var(--g300);
+  padding-left:20px;margin-left:24px;margin-top:4px;
+}
+.flow-branch-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.flow-branch-row .branch-label{font-size:12px;color:var(--g400);font-family:var(--mono)}
+.flow-sub-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:12px}
+.flow-sub-title{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:1px;color:var(--g400);font-family:var(--mono);margin-bottom:10px;
+}
+.flow-note{
+  background:var(--accent-light);border:1px solid #bfdbfe;
+  padding:14px 16px;border-radius:7px;
+  font-size:13px;color:var(--g600);margin-top:22px;max-width:560px;line-height:1.7;
+}
+.flow-note strong{color:var(--g800)}
+
+/* ══════════════════════════════════════════
+   SCREEN 1 — HOME
+══════════════════════════════════════════ */
+.hero{padding:64px 44px 52px;border-bottom:1px solid var(--border)}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:12px;color:var(--g500);
+  border:1px solid var(--g300);display:inline-block;
+  padding:5px 14px;border-radius:20px;margin-bottom:24px;
+}
+.hero h1{
+  font-size:42px;font-weight:800;line-height:1.1;letter-spacing:-1.5px;
+  color:var(--g800);margin-bottom:18px;max-width:600px;font-family:var(--display);
+}
+.hero h1 .u{border-bottom:3px solid var(--g800)}
+.hero-sub{
+  font-size:17px;color:var(--g500);max-width:500px;
+  line-height:1.75;margin-bottom:32px;
+}
+.hero-btns{display:flex;gap:12px;margin-bottom:48px}
+.terminal-wf{
+  background:var(--g800);border:none;border-radius:10px;
+  overflow:hidden;max-width:580px;
+  box-shadow:0 8px 28px rgba(0,0,0,0.18);
+}
+.term-bar{
+  background:rgba(255,255,255,0.06);padding:9px 16px;display:flex;align-items:center;gap:6px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.tdot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.2)}
+.term-label{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.3);margin:0 auto}
+.term-body{padding:16px 20px;font-family:var(--mono);font-size:12px;line-height:1.9;color:rgba(255,255,255,0.7)}
+.t-prompt{color:var(--white);font-weight:600}
+.t-out{color:rgba(255,255,255,0.4)}
+.t-success{font-weight:600;color:#86efac}
+
+.feat-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.feat{padding:32px 36px;border-right:1px solid var(--border)}
+.feat:last-child{border-right:none}
+.feat-icon{
+  width:36px;height:36px;background:var(--g100);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:14px;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--g600);
+}
+.feat-title{font-size:15px;font-weight:700;color:var(--g800);margin-bottom:6px}
+.feat-body{font-size:13px;color:var(--g500);line-height:1.7}
+
+.uc-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+  padding:36px 44px;background:var(--g50);border-bottom:1px solid var(--border);
+}
+.uc{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:18px}
+.uc-tag{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--g500);background:var(--g100);padding:3px 8px;border-radius:20px;display:inline-block;margin-bottom:8px}
+.uc-title{font-size:13px;font-weight:700;color:var(--g800);margin-bottom:5px}
+.uc-desc{font-size:12px;color:var(--g500);line-height:1.65}
+
+/* ══════════════════════════════════════════
+   SCREEN 2 — GET STARTED
+══════════════════════════════════════════ */
+.gs-layout{display:grid;grid-template-columns:1fr 260px}
+.gs-main{padding:36px 44px;border-right:1px solid var(--border)}
+.gs-sidebar{padding:26px 22px;background:var(--g50)}
+
+.os-tabs{
+  display:flex;border:1.5px solid var(--g300);border-radius:8px;
+  overflow:hidden;margin-bottom:32px;width:fit-content;
+}
+.os-tab{
+  padding:8px 20px;font-size:13px;font-weight:600;font-family:var(--mono);
+  background:var(--white);color:var(--g500);border:none;cursor:pointer;
+  border-right:1px solid var(--g300);transition:all 0.15s;
+}
+.os-tab:last-child{border-right:none}
+.os-tab.active{background:var(--g800);color:var(--white)}
+
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:18px;position:relative}
+.step:not(:last-child)::after{
+  content:'';position:absolute;left:17px;top:40px;bottom:0;
+  width:1px;background:var(--g200);
+}
+.step-num{
+  width:34px;height:34px;border-radius:50%;background:var(--white);
+  border:1.5px solid var(--g300);display:flex;align-items:center;
+  justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;
+  color:var(--g600);flex-shrink:0;z-index:1;margin-top:2px;
+}
+.step.done .step-num{background:var(--g800);color:var(--white);border-color:var(--g800)}
+.step-content{padding-bottom:30px;flex:1}
+.step-title{font-size:14px;font-weight:700;color:var(--g800);margin-bottom:5px;padding-top:6px}
+.step-desc{font-size:13px;color:var(--g500);margin-bottom:12px;line-height:1.65}
+
+.sb-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:14px}
+.sb-card-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--g500);font-family:var(--mono);margin-bottom:12px}
+.prereq-row{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--g600);margin-bottom:7px}
+.prereq-row:last-child{margin-bottom:0}
+.prereq-ok{color:var(--g700);font-weight:700;font-family:var(--mono)}
+.prereq-pending{color:var(--g400);font-family:var(--mono)}
+
+/* ══════════════════════════════════════════
+   SCREEN 3 — QUICKSTART
+══════════════════════════════════════════ */
+.qs-topbar{
+  padding:26px 44px;border-bottom:1px solid var(--border);
+  background:var(--g50);display:flex;justify-content:space-between;align-items:center;
+}
+.time-badge{
+  font-family:var(--mono);font-size:12px;color:var(--g500);
+  border:1px solid var(--g300);padding:6px 16px;border-radius:20px;
+  background:var(--white);
+}
+.qs-layout{display:grid;grid-template-columns:1fr 220px}
+.qs-main{padding:36px 44px;border-right:1px solid var(--border)}
+.qs-toc-panel{padding:24px 20px;position:sticky;top:52px}
+.qs-toc-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--g400);margin-bottom:12px}
+.qs-toc-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--g500);padding:6px 8px;border-radius:5px;margin-bottom:3px}
+.qs-toc-item.done{color:var(--g700);font-weight:600}
+.qs-toc-n{width:19px;height:19px;border-radius:50%;border:1.5px solid var(--g300);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--g500);flex-shrink:0}
+.qs-toc-item.done .qs-toc-n{background:var(--g800);border-color:var(--g800);color:var(--white)}
+
+.qs-step{padding-bottom:32px;margin-bottom:32px;border-bottom:1px solid var(--border)}
+.qs-step:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.qs-step-head{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.qs-step-n{
+  width:30px;height:30px;border-radius:50%;background:var(--g800);color:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:13px;font-weight:700;flex-shrink:0;
+}
+.qs-step-title{font-size:17px;font-weight:700;color:var(--g800);font-family:var(--display)}
+.qs-step p{font-size:13px;color:var(--g500);margin-bottom:12px;line-height:1.7}
+.qs-step p code{background:var(--g100);color:var(--g700);font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:4px;border:1px solid var(--border)}
+
+/* SUCCESS BANNER */
+.success-banner{
+  border:2px solid var(--g800);border-radius:10px;
+  padding:22px 24px;margin:28px 0;
+  display:flex;gap:18px;align-items:flex-start;
+  background:var(--g50);
+}
+.success-ico{
+  width:44px;height:44px;background:var(--g800);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:18px;font-weight:700;
+  color:var(--white);flex-shrink:0;
+}
+.success-label{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--g400);margin-bottom:6px}
+.success-title{font-size:17px;font-weight:700;color:var(--g800);margin-bottom:5px;font-family:var(--display)}
+.success-desc{font-size:13px;color:var(--g500);line-height:1.65}
+
+.next-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+.next-card{border:1px solid var(--border);border-radius:8px;padding:16px;cursor:pointer;transition:border-color 0.15s,box-shadow 0.15s}
+.next-card:hover{border-color:var(--g500);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.next-card-tag{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--g400);margin-bottom:6px}
+.next-card-title{font-size:13px;font-weight:700;color:var(--g800);margin-bottom:4px}
+.next-card-desc{font-size:12px;color:var(--g500);line-height:1.6}
+
+/* ══════════════════════════════════════════
+   SCREEN 4 — DOCS
+══════════════════════════════════════════ */
+.docs-layout{display:grid;grid-template-columns:220px 1fr;min-height:600px}
+.docs-sidebar{
+  border-right:1px solid var(--border);padding:18px 0;
+  background:var(--g50);
+}
+.doc-search{
+  margin:0 14px 16px;display:flex;align-items:center;gap:7px;
+  border:1px solid var(--border);border-radius:7px;padding:7px 12px;background:var(--white);
+}
+.doc-search input{border:none;outline:none;font-size:13px;color:var(--g700);width:100%;font-family:var(--sans)}
+.doc-search input::placeholder{color:var(--g400)}
+.doc-search-icon{color:var(--g400);font-family:var(--mono);font-size:12px}
+.sb-group{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--g400);padding:12px 18px 5px;margin-top:4px}
+.sb-link{display:block;padding:7px 18px;font-size:13px;color:var(--g500);border-left:3px solid transparent;cursor:pointer;transition:all 0.12s}
+.sb-link:hover{color:var(--g800);background:var(--g100)}
+.sb-link.on{color:var(--g800);font-weight:600;border-left-color:var(--g800);background:var(--g100)}
+
+.docs-content{padding:40px 52px;max-width:780px}
+.breadcrumb{font-family:var(--mono);font-size:11px;color:var(--g400);margin-bottom:20px}
+.docs-h1{font-size:28px;font-weight:700;color:var(--g800);margin-bottom:6px;letter-spacing:-0.5px;font-family:var(--display)}
+.docs-meta{font-family:var(--mono);font-size:11px;color:var(--g400);margin-bottom:26px}
+.docs-body h2{font-size:17px;font-weight:700;color:var(--g800);margin:28px 0 10px;padding-top:4px;border-top:1px solid var(--border)}
+.docs-body h3{font-size:15px;font-weight:700;color:var(--g700);margin:20px 0 8px}
+.docs-body p{font-size:14px;color:var(--g500);line-height:1.8;margin-bottom:14px}
+.docs-body ul{margin-left:20px;color:var(--g500);font-size:14px;line-height:1.85;margin-bottom:14px}
+.docs-body code{background:var(--g100);color:var(--g700);font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:4px;border:1px solid var(--border)}
+.config-tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+.config-tbl th{background:var(--g100);padding:10px 14px;text-align:left;font-weight:700;border-bottom:1.5px solid var(--border);color:var(--g700);font-family:var(--mono);font-size:11px}
+.config-tbl td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--g600)}
+.config-tbl tr:hover td{background:var(--g50)}
+.config-tbl td code{font-family:var(--mono);font-size:11px;background:var(--g100);padding:2px 5px;border-radius:4px;border:1px solid var(--border)}
+.docs-nav-strip{display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)}
+.docs-nav-link{font-size:13px;color:var(--g600);border:1px solid var(--border);padding:8px 16px;border-radius:7px;cursor:pointer}
+.docs-nav-link:hover{border-color:var(--g500);color:var(--g800)}
+
+/* ══════════════════════════════════════════
+   SCREEN 5 — TUTORIALS
+══════════════════════════════════════════ */
+.tut-body{padding:32px 44px}
+.filter-row{display:flex;gap:8px;margin-bottom:28px}
+.ftab{
+  padding:6px 18px;border-radius:20px;font-size:13px;font-weight:600;font-family:var(--mono);
+  cursor:pointer;border:1px solid var(--g300);color:var(--g500);background:var(--white);transition:all 0.15s;
+}
+.ftab.active{background:var(--g800);color:var(--white);border-color:var(--g800)}
+.ftab:hover:not(.active){border-color:var(--g500);color:var(--g700)}
+.tut-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tut-card{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--white);transition:box-shadow 0.15s,border-color 0.15s}
+.tut-card:hover{border-color:var(--g400);box-shadow:0 4px 16px rgba(0,0,0,0.07)}
+.tut-thumb{
+  height:96px;background:var(--g100);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;color:var(--g400);letter-spacing:1px;
+}
+.tut-info{padding:18px}
+.tut-title{font-size:14px;font-weight:700;color:var(--g800);margin-bottom:6px;margin-top:8px}
+.tut-desc{font-size:12px;color:var(--g500);line-height:1.65;margin-bottom:14px}
+.tut-foot{display:flex;align-items:center;justify-content:space-between}
+.tut-time{font-family:var(--mono);font-size:11px;color:var(--g400)}
+
+/* ══════════════════════════════════════════
+   SCREEN 6 — CONTRIBUTE
+══════════════════════════════════════════ */
+.contrib-body{padding:32px 44px}
+.path-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px}
+.path-card{border:1px solid var(--border);border-radius:10px;padding:24px;background:var(--white);transition:border-color 0.15s,box-shadow 0.15s}
+.path-card:hover{border-color:var(--g400);box-shadow:0 4px 16px rgba(0,0,0,0.06)}
+.path-icon{
+  width:38px;height:38px;background:var(--g100);border:1px solid var(--g200);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:12px;font-weight:700;color:var(--g600);margin-bottom:14px;
+}
+.path-title{font-size:15px;font-weight:700;color:var(--g800);margin-bottom:6px}
+.path-desc{font-size:13px;color:var(--g500);line-height:1.65;margin-bottom:14px}
+.path-link{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--g700)}
+
+.dev-block{border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:18px;background:var(--white)}
+.dev-block h3{font-size:15px;font-weight:700;color:var(--g800);margin-bottom:16px}
+.dev-step{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
+.dev-step:last-child{margin-bottom:0}
+.dev-num{
+  width:24px;height:24px;border-radius:50%;background:var(--g200);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;font-weight:700;color:var(--g600);flex-shrink:0;
+}
+.dev-step p{font-size:13px;color:var(--g500);line-height:1.65;padding-top:2px}
+.dev-step code{background:var(--g100);color:var(--g700);font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:4px;border:1px solid var(--border)}
+
+.issues-block{border:1px solid var(--border);border-radius:10px;padding:24px;background:var(--white)}
+.issues-block h3{font-size:15px;font-weight:700;color:var(--g800);margin-bottom:4px}
+.issues-sub{font-size:12px;color:var(--g400);margin-bottom:16px;font-family:var(--mono)}
+.issue-row{border:1px solid var(--border);border-radius:7px;padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s}
+.issue-row:hover{border-color:var(--g400);background:var(--g50);box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.issue-dot{width:8px;height:8px;border-radius:50%;background:var(--g400);flex-shrink:0}
+.issue-title{font-size:13px;font-weight:600;color:var(--g700);flex:1}
+.issue-tag-badge{font-family:var(--mono);font-size:10px;background:#ecfdf5;color:#065f46;padding:3px 8px;border-radius:20px;border:1px solid #a7f3d0;white-space:nowrap}
+
+/* ══════════════════════════════════════════
+   SCREEN 7 — COMMUNITY
+══════════════════════════════════════════ */
+.comm-body{padding:32px 44px;display:grid;grid-template-columns:1fr 1fr;gap:52px}
+.comm-col h3{font-size:18px;font-weight:700;color:var(--g800);margin-bottom:4px;font-family:var(--display)}
+.comm-col .sub{font-size:13px;color:var(--g500);margin-bottom:20px}
+.channel{border:1px solid var(--border);border-radius:8px;padding:16px 18px;display:flex;align-items:center;gap:16px;margin-bottom:10px;cursor:pointer;transition:all 0.15s}
+.channel:hover{border-color:var(--g400);background:var(--g50);box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.ch-icon{width:36px;height:36px;border-radius:8px;background:var(--g200);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--g600);flex-shrink:0}
+.ch-name{font-size:14px;font-weight:700;color:var(--g800);margin-bottom:2px}
+.ch-desc{font-size:12px;color:var(--g500)}
+.ch-arrow{color:var(--g300);margin-left:auto;font-size:16px}
+.about-card{border:1px solid var(--border);border-radius:8px;padding:20px;background:var(--white);margin-bottom:22px}
+.about-card p{font-size:13px;color:var(--g500);line-height:1.8;margin-bottom:10px}
+.about-card p:last-of-type{margin-bottom:14px}
+.ospo-tag{font-family:var(--mono);font-size:10px;font-weight:700;background:var(--accent-light);border:1px solid #bfdbfe;color:var(--accent);padding:4px 10px;border-radius:20px;display:inline-block}
+.team-row{display:flex;gap:16px;flex-wrap:wrap}
+.member{text-align:center}
+.m-avatar{width:48px;height:48px;border-radius:50%;background:var(--g200);border:2px solid var(--g300);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--g600)}
+.m-name{font-size:12px;font-weight:600;color:var(--g700)}
+.m-role{font-family:var(--mono);font-size:10px;color:var(--g400)}
+
+/* Footer */
+.wf-footer{background:var(--g50);border-top:1px solid var(--border);padding:16px 44px;display:flex;justify-content:space-between;align-items:center}
+.wf-footer-brand{font-size:13px;font-weight:600;color:var(--g700)}
+.wf-footer-links{display:flex;gap:18px}
+.wf-footer-link{font-size:12px;color:var(--g500)}
+
+/* ══ Responsive ══ */
+@media(max-width:900px){
+  .left-nav{display:none}
+  .main{margin-left:0}
+  .feat-strip,.uc-strip,.tut-grid,.path-cards,.comm-body,.gs-layout,.qs-layout,.docs-layout{grid-template-columns:1fr}
+  .docs-sidebar,.gs-sidebar,.qs-toc-panel{display:none}
+  .hero h1{font-size:30px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     LEFT SIDEBAR
+══════════════════════════════════════════ -->
+<nav class="left-nav">
+  <div class="left-nav-logo">
+    NSB Website
+    <span class="sub">Wireframe Prototype</span>
+  </div>
+
+  <div class="left-nav-section">Website Design &amp; UX Approach</div>
+  <button class="left-nav-item active" data-s="ux-objective">Objective</button>
+  <button class="left-nav-item" data-s="ux-philosophy">Design Philosophy</button>
+  <button class="left-nav-item" data-s="flow">User Flow Diagram</button>
+  <button class="left-nav-item" data-s="ux-structure">Website Structure</button>
+  <button class="left-nav-item" data-s="ux-sitemap">Structured Sitemap</button>
+  <button class="left-nav-item" data-s="ux-onboarding">Onboarding Strategy</button>
+  <button class="left-nav-item" data-s="ux-wireframes">Wireframe Overview &amp; Validation</button>
+
+  <div class="left-nav-section">Screens</div>
+  <button class="left-nav-item" data-s="home">
+    <span class="step-num">1</span>Home
+  </button>
+  <button class="left-nav-item" data-s="getstarted">
+    <span class="step-num">2</span>Get Started
+  </button>
+  <button class="left-nav-item" data-s="quickstart">
+    <span class="step-num">3</span>Quickstart
+  </button>
+  <button class="left-nav-item" data-s="docs">
+    <span class="step-num">4</span>Documentation
+  </button>
+  <button class="left-nav-item" data-s="tutorials">
+    <span class="step-num">5</span>Tutorials
+  </button>
+  <button class="left-nav-item" data-s="contribute">
+    <span class="step-num">6</span>Contribute
+  </button>
+  <button class="left-nav-item" data-s="community">
+    <span class="step-num">7</span>Community / About
+  </button>
+
+  <div class="left-nav-footer">
+    GSoC 2026<br>
+    UCSC OSPO<br>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════ -->
+<div class="main">
+
+  <!-- Meta bar -->
+  <div class="meta-bar">
+    <span class="meta-bar-title">NSB Website — Mid-Fidelity Wireframes · GSoC 2026</span>
+    <div class="meta-pills">
+      <!-- <button class="meta-pill active" data-s="ux-objective">Objective</button>
+      <button class="meta-pill" data-s="ux-philosophy">Philosophy</button>
+      <button class="meta-pill" data-s="flow">User Flow</button>
+      <button class="meta-pill" data-s="ux-structure">Structure</button>
+      <button class="meta-pill" data-s="ux-sitemap">Sitemap</button>
+      <button class="meta-pill" data-s="ux-onboarding">Onboarding</button>
+      <button class="meta-pill" data-s="ux-wireframes">Wireframes</button> -->
+      <button class="meta-pill" data-s="home">Home</button>
+      <button class="meta-pill" data-s="getstarted">Get Started</button>
+      <button class="meta-pill" data-s="quickstart">Quickstart</button>
+      <button class="meta-pill" data-s="docs">Docs</button>
+      <button class="meta-pill" data-s="tutorials">Tutorials</button>
+      <button class="meta-pill" data-s="contribute">Contribute</button>
+      <button class="meta-pill" data-s="community">Community</button>
+    </div>
+  </div>
+
+<!-- ══════════════════════════════════════════
+     UX DOC — OBJECTIVE
+══════════════════════════════════════════ -->
+<div class="screen active" id="ux-objective">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">Website Design &amp; UX Approach</div>
+      <div class="screen-title">1. Objective</div>
+    </div>
+    <div class="flow-canvas" style="font-family:var(--sans)">
+      <p style="font-size:15px;color:var(--g600);line-height:1.8;margin-bottom:14px">The goal of the proposed website is to reduce onboarding friction for first-time users of NSB and provide a structured, user-friendly entry point into the system.</p>
+      <p style="font-size:15px;color:var(--g600);line-height:1.8">Currently, new users must navigate multiple sources of documentation and infer the correct sequence of steps. This proposal restructures the experience into a clear, guided flow that prioritizes usability without sacrificing depth.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     UX DOC — DESIGN PHILOSOPHY
+══════════════════════════════════════════ -->
+<div class="screen" id="ux-philosophy">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">Website Design &amp; UX Approach</div>
+      <div class="screen-title">2. Design Philosophy</div>
+    </div>
+    <div class="flow-canvas" style="font-family:var(--sans)">
+      <p style="font-size:15px;color:var(--g600);line-height:1.8;margin-bottom:20px">The website is designed around a few key principles:</p>
+      <div style="display:flex;flex-direction:column;gap:0">
+        <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:10px">
+          <div style="background:var(--g800);color:#fff;font-family:var(--mono);font-size:11px;font-weight:700;padding:14px 18px;min-width:190px;display:flex;align-items:center">First Success First</div>
+          <div style="padding:14px 20px;font-size:14px;color:var(--g600);line-height:1.65;background:var(--white)">Users should be able to run a working NSB example as quickly as possible.</div>
+        </div>
+        <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:10px">
+          <div style="background:var(--g800);color:#fff;font-family:var(--mono);font-size:11px;font-weight:700;padding:14px 18px;min-width:190px;display:flex;align-items:center">Progressive Disclosure</div>
+          <div style="padding:14px 20px;font-size:14px;color:var(--g600);line-height:1.65;background:var(--g50)">Advanced concepts are introduced only after initial setup.</div>
+        </div>
+        <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:10px">
+          <div style="background:var(--g800);color:#fff;font-family:var(--mono);font-size:11px;font-weight:700;padding:14px 18px;min-width:190px;display:flex;align-items:center">Minimal Cognitive Load</div>
+          <div style="padding:14px 20px;font-size:14px;color:var(--g600);line-height:1.65;background:var(--white)">Setup, configuration, and execution are separated into clear steps.</div>
+        </div>
+        <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:10px">
+          <div style="background:var(--g800);color:#fff;font-family:var(--mono);font-size:11px;font-weight:700;padding:14px 18px;min-width:190px;display:flex;align-items:center">Clear Verification</div>
+          <div style="padding:14px 20px;font-size:14px;color:var(--g600);line-height:1.65;background:var(--g50)">Each stage includes expected outputs so users know they are on track.</div>
+        </div>
+        <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden">
+          <div style="background:var(--g800);color:#fff;font-family:var(--mono);font-size:11px;font-weight:700;padding:14px 18px;min-width:190px;display:flex;align-items:center">Separation of Concerns</div>
+          <div style="padding:14px 20px;font-size:14px;color:var(--g600);line-height:1.65;background:var(--white)">Quickstart is distinct from detailed documentation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     UX DOC — WEBSITE STRUCTURE
+══════════════════════════════════════════ -->
+<div class="screen" id="ux-structure">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">Website Design &amp; UX Approach</div>
+      <div class="screen-title">4. Website Structure</div>
+    </div>
+    <div class="flow-canvas" style="font-family:var(--sans)">
+      <p style="font-size:15px;color:var(--g600);line-height:1.8;margin-bottom:20px">The site is organized into modular sections that support progressive exploration:</p>
+      <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden">
+        <div style="display:flex;gap:0;border-bottom:1px solid var(--border)">
+          <div style="background:var(--g800);color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;padding:13px 20px;min-width:160px;display:flex;align-items:center">Home</div>
+          <div style="padding:13px 20px;font-size:14px;color:var(--g600);line-height:1.6;background:var(--white);flex:1">Value proposition, feature highlights, and Get Started CTA.</div>
+        </div>
+        <div style="display:flex;gap:0;border-bottom:1px solid var(--border)">
+          <div style="background:var(--g700);color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;padding:13px 20px;min-width:160px;display:flex;align-items:center">Get Started</div>
+          <div style="padding:13px 20px;font-size:14px;color:var(--g600);line-height:1.6;background:var(--g50);flex:1">Guided setup with platform-specific instructions and step progress.</div>
+        </div>
+        <div style="display:flex;gap:0;border-bottom:1px solid var(--border)">
+          <div style="background:var(--g800);color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;padding:13px 20px;min-width:160px;display:flex;align-items:center">Quickstart</div>
+          <div style="padding:13px 20px;font-size:14px;color:var(--g600);line-height:1.6;background:var(--white);flex:1">Minimal working example — the first success path.</div>
+        </div>
+        <div style="display:flex;gap:0;border-bottom:1px solid var(--border)">
+          <div style="background:var(--g700);color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;padding:13px 20px;min-width:160px;display:flex;align-items:center">Documentation</div>
+          <div style="padding:13px 20px;font-size:14px;color:var(--g600);line-height:1.6;background:var(--g50);flex:1">Detailed reference covering config, API, architecture, and message protocol.</div>
+        </div>
+        <div style="display:flex;gap:0;border-bottom:1px solid var(--border)">
+          <div style="background:var(--g800);color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;padding:13px 20px;min-width:160px;display:flex;align-items:center">Tutorials</div>
+          <div style="padding:13px 20px;font-size:14px;color:var(--g600);line-height:1.6;background:var(--white);flex:1">Structured learning paths organized by difficulty.</div>
+        </div>
+        <div style="display:flex;gap:0;border-bottom:1px solid var(--border)">
+          <div style="background:var(--g700);color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;padding:13px 20px;min-width:160px;display:flex;align-items:center">Contribute</div>
+          <div style="padding:13px 20px;font-size:14px;color:var(--g600);line-height:1.6;background:var(--g50);flex:1">Contributor onboarding, dev setup, and good-first-issue lists.</div>
+        </div>
+        <div style="display:flex;gap:0">
+          <div style="background:var(--g800);color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;padding:13px 20px;min-width:160px;display:flex;align-items:center">Community &amp; About</div>
+          <div style="padding:13px 20px;font-size:14px;color:var(--g600);line-height:1.6;background:var(--white);flex:1">Project context, communication channels, and team information.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     UX DOC — STRUCTURED SITEMAP
+══════════════════════════════════════════ -->
+<div class="screen" id="ux-sitemap">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">Website Design &amp; UX Approach</div>
+      <div class="screen-title">5. Structured Sitemap</div>
+    </div>
+    <div class="flow-canvas" style="font-family:var(--sans)">
+      <div style="display:flex;gap:10px;margin-bottom:16px">
+        <span style="background:var(--g800);color:#fff;font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px">P0 launch critical</span>
+        <span style="background:var(--accent-light);color:var(--accent);font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #bfdbfe">P1 within GSoC period</span>
+        <span style="background:var(--g100);color:var(--g500);font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid var(--border)">P2 future enhancement</span>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead>
+          <tr style="background:var(--g800);color:#fff">
+            <th style="padding:10px 14px;text-align:left;font-family:var(--mono);font-size:11px;font-weight:600;width:15%">Section</th>
+            <th style="padding:10px 14px;text-align:left;font-family:var(--mono);font-size:11px;font-weight:600;width:22%">Page / Route</th>
+            <th style="padding:10px 14px;text-align:center;font-family:var(--mono);font-size:11px;font-weight:600;width:10%">Priority</th>
+            <th style="padding:10px 14px;text-align:left;font-family:var(--mono);font-size:11px;font-weight:600">Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:var(--white)"><td style="padding:8px 14px;font-weight:700;color:var(--g700);border-bottom:1px solid var(--border)">Home</td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#fef9ec;color:#92400e;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P0</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Overview, value proposition, and entry point</td></tr>
+          <tr style="background:var(--g50)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/features</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#eff6ff;color:#1a56db;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P1</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Highlight key capabilities of NSB</td></tr>
+          <tr style="background:var(--white)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/use-cases</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#eff6ff;color:#1a56db;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P1</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Show practical applications (IoT, SDN, etc.)</td></tr>
+          <tr style="background:var(--g50)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/faq</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:var(--g100);color:var(--g500);font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P2</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Answer common beginner questions</td></tr>
+          <tr style="background:var(--white)"><td style="padding:8px 14px;font-weight:700;color:var(--g700);border-bottom:1px solid var(--border)">Get Started</td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/get-started</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#fef9ec;color:#92400e;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P0</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Central onboarding hub</td></tr>
+          <tr style="background:var(--g50)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/quickstart</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#fef9ec;color:#92400e;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P0</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Run first working simulation (core flow)</td></tr>
+          <tr style="background:var(--white)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/install/*</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#fef9ec;color:#92400e;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P0</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Platform-specific installation guides</td></tr>
+          <tr style="background:var(--g50)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/troubleshooting</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#eff6ff;color:#1a56db;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P1</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Resolve common setup issues</td></tr>
+          <tr style="background:var(--white)"><td style="padding:8px 14px;font-weight:700;color:var(--g700);border-bottom:1px solid var(--border)">Documentation</td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/docs/architecture</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#fef9ec;color:#92400e;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P0</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Explain system structure</td></tr>
+          <tr style="background:var(--g50)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/docs/config</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#fef9ec;color:#92400e;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P0</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Config.yaml reference</td></tr>
+          <tr style="background:var(--white)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/docs/api</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#eff6ff;color:#1a56db;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P1</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Python/C++ API reference</td></tr>
+          <tr style="background:var(--g50)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/docs/protocol</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#eff6ff;color:#1a56db;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P1</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Message format and communication</td></tr>
+          <tr style="background:var(--white)"><td style="padding:8px 14px;font-weight:700;color:var(--g700);border-bottom:1px solid var(--border)">Tutorials</td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/tutorials</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#eff6ff;color:#1a56db;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P1</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Guided learning paths</td></tr>
+          <tr style="background:var(--g50)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/tutorials/basic</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#fef9ec;color:#92400e;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P0</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">End-to-end simulation walkthrough</td></tr>
+          <tr style="background:var(--white)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/tutorials/advanced</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#eff6ff;color:#1a56db;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P1</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Advanced use cases and integrations</td></tr>
+          <tr style="background:var(--g50)"><td style="padding:8px 14px;font-weight:700;color:var(--g700);border-bottom:1px solid var(--border)">Contribute</td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/contribute</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#eff6ff;color:#1a56db;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P1</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Entry point for contributors</td></tr>
+          <tr style="background:var(--white)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/contribute/setup</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:#eff6ff;color:#1a56db;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P1</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Development environment setup</td></tr>
+          <tr style="background:var(--g50)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/contribute/issues</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:var(--g100);color:var(--g500);font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P2</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Good first issues</td></tr>
+          <tr style="background:var(--white)"><td style="padding:8px 14px;font-weight:700;color:var(--g700);border-bottom:1px solid var(--border)">Community</td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/community</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:var(--g100);color:var(--g500);font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P2</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Communication channels</td></tr>
+          <tr style="background:var(--g50)"><td style="padding:8px 14px;border-bottom:1px solid var(--border)"></td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px;border-bottom:1px solid var(--border)">/showcase</td><td style="padding:8px 14px;text-align:center;border-bottom:1px solid var(--border)"><span style="background:var(--g100);color:var(--g500);font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P2</span></td><td style="padding:8px 14px;color:var(--g600);border-bottom:1px solid var(--border)">Example projects</td></tr>
+          <tr style="background:var(--white)"><td style="padding:8px 14px;font-weight:700;color:var(--g700)">About</td><td style="padding:8px 14px;font-family:var(--mono);font-size:12px">/about</td><td style="padding:8px 14px;text-align:center"><span style="background:var(--g100);color:var(--g500);font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">P2</span></td><td style="padding:8px 14px;color:var(--g600)">Project background and team</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     UX DOC — ONBOARDING STRATEGY
+══════════════════════════════════════════ -->
+<div class="screen" id="ux-onboarding">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">Website Design &amp; UX Approach</div>
+      <div class="screen-title">6. Onboarding Strategy</div>
+    </div>
+    <div class="flow-canvas" style="font-family:var(--sans)">
+      <p style="font-size:15px;color:var(--g600);line-height:1.8;margin-bottom:20px">The onboarding flow is centered around a <strong>first success</strong> milestone — users successfully running a basic NSB simulation. To achieve this:</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
+        <div style="display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px 18px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--g800);flex-shrink:0;margin-top:6px"></div>
+          <span style="font-size:14px;color:var(--g600);line-height:1.65">A Quickstart path provides minimal configuration and copy-paste steps.</span>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px 18px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--g800);flex-shrink:0;margin-top:6px"></div>
+          <span style="font-size:14px;color:var(--g600);line-height:1.65">Complex topics are deferred.</span>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px 18px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--g800);flex-shrink:0;margin-top:6px"></div>
+          <span style="font-size:14px;color:var(--g600);line-height:1.65">Each step includes verification checkpoints.</span>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px 18px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--g800);flex-shrink:0;margin-top:6px"></div>
+          <span style="font-size:14px;color:var(--g600);line-height:1.65">Users are guided to deeper sections after success.</span>
+        </div>
+      </div>
+      <div style="background:#f0faf5;border:2px solid #2d7a4f;border-radius:10px;padding:18px 22px;display:flex;align-items:center;gap:16px">
+        <div style="background:#2d7a4f;color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;padding:6px 12px;border-radius:6px;white-space:nowrap">★ First Success Checkpoint</div>
+        <span style="font-size:14px;color:#1a5c38;line-height:1.6">User sees simulation output in terminal — confirmed with a green banner.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     UX DOC — WIREFRAME OVERVIEW & VALIDATION
+══════════════════════════════════════════ -->
+<div class="screen" id="ux-wireframes">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">Website Design &amp; UX Approach</div>
+      <div class="screen-title">7. Wireframe Overview &amp; Validation</div>
+    </div>
+    <div class="flow-canvas" style="font-family:var(--sans)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <div>
+          <div style="font-size:16px;font-weight:700;color:var(--g800);margin-bottom:10px;font-family:var(--display)">Wireframe Overview</div>
+          <p style="font-size:14px;color:var(--g600);line-height:1.75;margin-bottom:14px">Low-fidelity wireframes were created to visualize the structure and flow of the website. Seven screens cover the full site as an interactive HTML file.</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;gap:10px;align-items:center;font-size:13px;color:var(--g600)"><span style="color:var(--g800);font-weight:700">→</span> Home → Get Started → Quickstart flow</div>
+            <div style="display:flex;gap:10px;align-items:center;font-size:13px;color:var(--g600)"><span style="color:var(--g800);font-weight:700">→</span> Step-based onboarding with platform-specific guidance</div>
+            <div style="display:flex;gap:10px;align-items:center;font-size:13px;color:var(--g600)"><span style="color:var(--g800);font-weight:700">→</span> First Success checkpoint with green confirmation banner</div>
+            <div style="display:flex;gap:10px;align-items:center;font-size:13px;color:var(--g600)"><span style="color:var(--g800);font-weight:700">→</span> Modular documentation and learning sections</div>
+          </div>
+          <p style="font-size:13px;color:var(--g400);margin-top:14px;font-style:italic">The wireframes focus on structure and user flow rather than visual design.</p>
+        </div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:var(--g800);margin-bottom:10px;font-family:var(--display)">Validation Approach</div>
+          <p style="font-size:14px;color:var(--g600);line-height:1.75;margin-bottom:14px">The proposed structure will be validated through:</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--g600);line-height:1.6">Testing onboarding with new users unfamiliar with NSB.</div>
+            <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--g600);line-height:1.6">Observing where users encounter friction in the flow.</div>
+            <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--g600);line-height:1.6">Iterating on flow, wording, and structure based on feedback.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 0 — USER FLOW
+══════════════════════════════════════════ -->
+<div class="screen" id="flow">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">User Flow</div>
+      <div class="screen-title">End-to-End User Journey</div>
+      <div class="screen-meta-row">
+        <span>How a new user moves from first visit to a working simulation. Every screen design decision is made in service of the critical path below.</span>
+      </div>
+    </div>
+
+    <div class="flow-canvas">
+
+      <!-- ── Critical Path Stepper ── -->
+      <div style="margin-bottom:10px">
+        <div style="font-size:17px;font-weight:700;color:var(--g800);margin-bottom:6px;font-family:var(--display)">Critical User Flow — New User Journey</div>
+        <div style="font-size:13px;color:var(--g500);margin-bottom:24px">Every screen design prioritizes this path. The ★ First Success checkpoint is the single most important milestone on the site.</div>
+      </div>
+
+      <!-- Stepper track -->
+      <div style="background:var(--g50);border:1px solid var(--border);border-radius:14px;padding:20px 24px;display:flex;align-items:center;gap:0;overflow-x:auto;margin-bottom:28px">
+
+        <!-- Step 1 -->
+        <div style="flex:1;background:var(--white);border:1px solid var(--g300);border-radius:10px;padding:14px 16px;text-align:center">
+          <div style="font-family:var(--mono);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--g400);margin-bottom:6px">Step 1</div>
+          <div style="font-size:14px;font-weight:700;color:var(--g800);margin-bottom:4px">Home</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--g400)">/</div>
+        </div>
+
+        <div style="color:var(--g300);font-size:18px;padding:0 8px;flex-shrink:0">→</div>
+
+        <!-- Step 2 -->
+        <div style="flex:1;background:var(--white);border:1px solid var(--g300);border-radius:10px;padding:14px 16px;text-align:center">
+          <div style="font-family:var(--mono);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--g400);margin-bottom:6px">Step 2</div>
+          <div style="font-size:14px;font-weight:700;color:var(--g800);margin-bottom:4px">Get Started</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--g400)">/get-started</div>
+        </div>
+
+        <div style="color:var(--g300);font-size:18px;padding:0 8px;flex-shrink:0">→</div>
+
+        <!-- Step 3 -->
+        <div style="flex:1;background:var(--white);border:1px solid var(--g300);border-radius:10px;padding:14px 16px;text-align:center">
+          <div style="font-family:var(--mono);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--g400);margin-bottom:6px">Step 3</div>
+          <div style="font-size:14px;font-weight:700;color:var(--g800);margin-bottom:4px">Quickstart</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--g400)">/quickstart</div>
+        </div>
+
+        <div style="color:var(--g300);font-size:18px;padding:0 8px;flex-shrink:0">→</div>
+
+        <!-- Step 4: CHECKPOINT -->
+        <div style="flex:1;background:#f0faf5;border:2px solid #2d7a4f;border-radius:10px;padding:14px 16px;text-align:center">
+          <div style="font-family:var(--mono);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:#2d7a4f;margin-bottom:6px">Step 4</div>
+          <div style="font-size:14px;font-weight:700;color:#1a5c38;margin-bottom:8px">First Success</div>
+          <div style="background:#2d7a4f;color:#fff;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.8px;padding:4px 8px;border-radius:5px;display:inline-block">★ CHECKPOINT</div>
+        </div>
+
+        <div style="color:var(--g300);font-size:18px;padding:0 8px;flex-shrink:0">→</div>
+
+        <!-- Step 5: Docs / Tutorials -->
+        <div style="flex:1;background:var(--white);border:1px solid var(--g300);border-radius:10px;padding:14px 16px;text-align:center">
+          <div style="font-family:var(--mono);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--g400);margin-bottom:6px">Step 5</div>
+          <div style="font-size:14px;font-weight:700;color:var(--g800);margin-bottom:4px">Docs / Tutorials</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--g400)">/docs · /tutorials</div>
+        </div>
+
+        <div style="color:var(--g300);font-size:18px;padding:0 8px;flex-shrink:0">→</div>
+
+        <!-- Step 6: Contribute -->
+        <div style="flex:1;background:var(--white);border:1px solid var(--g300);border-radius:10px;padding:14px 16px;text-align:center">
+          <div style="font-family:var(--mono);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--g400);margin-bottom:6px">Step 6</div>
+          <div style="font-size:14px;font-weight:700;color:var(--g800);margin-bottom:4px">Contribute</div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--g400)">/contribute</div>
+        </div>
+
+      </div>
+
+      <!-- Secondary Flows -->
+      <hr style="border:none;border-top:1px solid var(--border);margin:0 0 22px">
+      <div class="flow-section-title">Secondary Flows</div>
+
+      <div class="flow-sub-grid">
+        <div>
+          <div class="flow-sub-title">Intermediate User</div>
+          <div class="flow-row" style="flex-wrap:wrap;gap:6px">
+            <div class="flow-node" style="font-size:12px;border-radius:6px;padding:7px 12px">Home</div>
+            <div class="flow-arr" style="font-size:15px">→</div>
+            <div class="flow-node" style="font-size:12px;border-radius:6px;padding:7px 12px">Docs</div>
+            <div class="flow-arr" style="font-size:15px">→</div>
+            <div class="flow-node" style="font-size:12px;border-radius:6px;padding:7px 12px">Config reference</div>
+            <div class="flow-arr" style="font-size:15px">→</div>
+            <div class="flow-node" style="font-size:12px;border-radius:6px;padding:7px 12px">API reference</div>
+          </div>
+        </div>
+        <div>
+          <div class="flow-sub-title">Contributor</div>
+          <div class="flow-row" style="flex-wrap:wrap;gap:6px">
+            <div class="flow-node" style="font-size:12px;border-radius:6px;padding:7px 12px">Home</div>
+            <div class="flow-arr" style="font-size:15px">→</div>
+            <div class="flow-node" style="font-size:12px;border-radius:6px;padding:7px 12px">Contribute</div>
+            <div class="flow-arr" style="font-size:15px">→</div>
+            <div class="flow-node" style="font-size:12px;border-radius:6px;padding:7px 12px">Dev setup</div>
+            <div class="flow-arr" style="font-size:15px">→</div>
+            <div class="flow-node" style="font-size:12px;border-radius:6px;padding:7px 12px">First PR</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-note">
+        <strong>Design principle:</strong> Every page outside the critical path (Docs, Tutorials, Contribute) must be reachable from the Quickstart First Success state via contextual "What's next?" links — keeping the user inside the site rather than routing back to GitHub.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 1 — HOME
+══════════════════════════════════════════ -->
+<div class="screen" id="home">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">Screen 1</div>
+      <div class="screen-title">Home Page</div>
+      <div class="screen-meta-row">
+        <span><strong>Purpose:</strong> First impression. Explain NSB, show a working code preview, drive users to Get Started.</span>
+        <span><strong>Primary action:</strong> Click "Get Started" CTA</span>
+      </div>
+    </div>
+    <div class="browser-wrap">
+      <div class="browser-bar">
+        <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
+        <div class="b-url">nsb.ucsc.edu</div>
+      </div>
+      <div class="browser-body">
+        <!-- Nav -->
+        <div class="wf-nav">
+          <div class="wf-logo">NSB</div>
+          <div class="wf-nav-links">
+            <div class="wf-nav-link">Get Started</div>
+            <div class="wf-nav-link">Docs</div>
+            <div class="wf-nav-link">Tutorials</div>
+            <div class="wf-nav-link">Contribute</div>
+            <div class="wf-nav-link">Community</div>
+          </div>
+          <div class="wf-nav-right">
+            <div class="wf-btn-ghost">GitHub</div>
+            <div class="wf-btn-fill">Get Started</div>
+          </div>
+        </div>
+        <!-- Hero -->
+        <div class="hero">
+          <div class="hero-eyebrow">v0.4.2 — Now with ns-3 bridge support</div>
+          <h1>Bridge your simulators<br>with the real world</h1>
+          <p class="hero-sub"><strong>Network Simulation Bridge (NSB)</strong> connects network simulators like ns-3 and OMNeT++ to real applications, giving you Python and C++ control, real-time visualization, and reproducible experiments.</p>
+          <div class="hero-btns">
+            <div class="btn-fill">Quickstart — 5 min</div>
+            <div class="btn-outline">Read the Docs</div>
+          </div>
+          <div class="terminal-wf">
+            <div class="term-bar">
+              <div class="tdot"></div><div class="tdot"></div><div class="tdot"></div>
+              <div class="term-label">terminal — ~/my-simulation</div>
+            </div>
+            <div class="term-body">
+              <div><span class="t-prompt">$</span> pip install nsb-client</div>
+              <div class="t-out">Successfully installed nsb-client-0.4.2</div>
+              <div style="margin-top:6px"><span class="t-prompt">$</span> nsb-server --config config.yaml</div>
+              <div class="t-out">NSB Server listening on port 5000</div>
+              <div style="margin-top:6px"><span class="t-prompt">$</span> python examples/basic_client.py</div>
+              <div class="t-out">client1 connected (port 5001)</div>
+              <div class="t-out">client2 connected (port 5002)</div>
+              <div class="t-success">Simulation running — 2 clients active, 10 messages exchanged</div>
+            </div>
+          </div>
+        </div>
+        <!-- Feature strip -->
+        <div class="feat-strip">
+          <div class="feat">
+            <div class="feat-icon">SIM</div>
+            <div class="feat-title">Simulator Bridge</div>
+            <div class="feat-body">Connect ns-3, OMNeT++, or any custom simulator to real or emulated networks through a unified bridge interface.</div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">API</div>
+            <div class="feat-title">Python and C++ Control</div>
+            <div class="feat-body">Full-featured client libraries for both languages. Write experiment controllers, automate scenarios, and parse results.</div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">VIZ</div>
+            <div class="feat-title">Real-Time Visualization</div>
+            <div class="feat-body">Live topology view and packet-flow visualization. Watch your simulation unfold without writing custom plotting code.</div>
+          </div>
+        </div>
+        <!-- Use cases -->
+        <div class="uc-strip">
+          <div class="uc"><div class="uc-tag">IoT</div><div class="uc-title">IoT Network Simulation</div><div class="uc-desc">Simulate constrained devices with realistic traffic before deploying hardware.</div></div>
+          <div class="uc"><div class="uc-tag">SDN</div><div class="uc-title">SDN Research</div><div class="uc-desc">Test software-defined networking controllers and routing algorithms at scale.</div></div>
+          <div class="uc"><div class="uc-tag">Academic</div><div class="uc-title">Protocol Testing</div><div class="uc-desc">Benchmark new transport protocols without physical lab infrastructure.</div></div>
+          <div class="uc"><div class="uc-tag">Education</div><div class="uc-title">Teaching Labs</div><div class="uc-desc">Give students a consistent, reproducible network lab on any laptop.</div></div>
+        </div>
+        <div class="wf-footer">
+          <span class="wf-footer-brand">NSB — UC Santa Cruz OSPO</span>
+          <div class="wf-footer-links">
+            <span class="wf-footer-link">GitHub</span>
+            <span class="wf-footer-link">Docs</span>
+            <span class="wf-footer-link">License</span>
+            <span class="wf-footer-link">Contact</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ann"><strong>Key elements:</strong> Sticky nav with all sections · Hero with value prop, dual CTA (Get Started primary, Docs secondary) · Live terminal preview · 3-col feature strip · 4-col use case cards · Footer</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 2 — GET STARTED
+══════════════════════════════════════════ -->
+<div class="screen" id="getstarted">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">Screen 2</div>
+      <div class="screen-title">Get Started Hub</div>
+      <div class="screen-meta-row">
+        <span><strong>Purpose:</strong> Platform-specific installation. Prerequisites check. Routes user to Quickstart.</span>
+        <span><strong>Primary action:</strong> Select OS tab, follow steps, click "Next: Quickstart"</span>
+      </div>
+    </div>
+    <div class="browser-wrap">
+      <div class="browser-bar">
+        <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
+        <div class="b-url">nsb.ucsc.edu/get-started</div>
+      </div>
+      <div class="browser-body">
+        <div class="wf-nav">
+          <div class="wf-logo">NSB</div>
+          <div class="wf-nav-links">
+            <div class="wf-nav-link on">Get Started</div>
+            <div class="wf-nav-link">Docs</div>
+            <div class="wf-nav-link">Tutorials</div>
+            <div class="wf-nav-link">Contribute</div>
+            <div class="wf-nav-link">Community</div>
+          </div>
+          <div class="wf-nav-right"><div class="wf-btn-ghost">GitHub</div></div>
+        </div>
+        <div class="page-header">
+          <div class="breadcrumb">Home / Get Started</div>
+          <div class="page-title">Get Started with NSB</div>
+          <div class="page-subtitle">Install NSB and prepare your environment. Estimated time: 10 minutes.</div>
+        </div>
+        <div class="gs-layout">
+          <div class="gs-main">
+            <div class="os-tabs" style="margin-top:4px">
+              <button class="os-tab active">macOS</button>
+              <button class="os-tab">Linux</button>
+              <button class="os-tab">Windows (WSL2)</button>
+            </div>
+            <div class="steps">
+              <div class="step done">
+                <div class="step-num">✓</div>
+                <div class="step-content">
+                  <div class="step-title">Check prerequisites</div>
+                  <div class="step-desc">You need Python 3.8+, Git, and Homebrew before continuing.</div>
+                  <div class="code-block">
+                    <div class="code-bar"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+                    <pre>$ python3 --version    # must be 3.8 or higher
+$ git --version
+$ brew --version</pre>
+                  </div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <div class="step-title">Install NSB server</div>
+                  <div class="step-desc">Install the NSB message server via Homebrew. This handles routing between simulator and client processes.</div>
+                  <div class="code-block">
+                    <div class="code-bar"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+                    <pre>$ brew tap ucsc-ospo/nsb
+$ brew install nsb-server
+$ nsb-server --version    # verify: NSB Server 0.4.2</pre>
+                  </div>
+                  <div class="verify">You should see: NSB Server 0.4.2. If "command not found", restart your terminal.</div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <div class="step-title">Install Python client library</div>
+                  <div class="step-desc">Install the Python package that lets your code communicate with the NSB server.</div>
+                  <div class="code-block">
+                    <div class="code-bar"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+                    <pre>$ python3 -m venv nsb-env
+$ source nsb-env/bin/activate
+$ pip install nsb-client</pre>
+                  </div>
+                  <div class="verify">You should see: Successfully installed nsb-client-0.4.2</div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                  <div class="step-title">Clone the examples repository</div>
+                  <div class="code-block">
+                    <div class="code-bar"><span>bash</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+                    <pre>$ git clone https://github.com/ucsc-ospo/nsb-examples
+$ cd nsb-examples</pre>
+                  </div>
+                  <div style="margin-top:16px">
+                    <button class="btn-fill" data-goto="quickstart" style="font-size:12px">Next: Run your first simulation →</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gs-sidebar">
+            <div class="sb-card">
+              <div class="sb-card-title">Prerequisites</div>
+              <div class="prereq-row"><span class="prereq-ok">OK</span> Python 3.8+</div>
+              <div class="prereq-row"><span class="prereq-ok">OK</span> Git 2.0+</div>
+              <div class="prereq-row"><span class="prereq-ok">OK</span> Homebrew (macOS)</div>
+              <div class="prereq-row"><span class="prereq-pending">--</span> ns-3 (simulator tutorials only)</div>
+            </div>
+            <div class="sb-card">
+              <div class="sb-card-title">Having trouble?</div>
+              <p style="font-size:12px;color:var(--g500);line-height:1.6">See the <a href="#" style="color:var(--g700)">Troubleshooting guide</a> for port conflicts, YAML syntax errors, and missing dependency issues.</p>
+            </div>
+            <div class="sb-card">
+              <div class="sb-card-title">Windows users</div>
+              <p style="font-size:12px;color:var(--g500);line-height:1.6">Select the <strong>Windows (WSL2)</strong> tab above, or use the <a href="#" style="color:var(--g700)">Docker fallback guide</a>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="wf-footer">
+          <span class="wf-footer-brand">NSB — UC Santa Cruz OSPO</span>
+          <div class="wf-footer-links"><span class="wf-footer-link">GitHub</span><span class="wf-footer-link">Docs</span><span class="wf-footer-link">License</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ann"><strong>Key elements:</strong> OS tab selector (macOS / Linux / Windows WSL2) · Connected step list with vertical connector line · Copy-paste commands with verify hints · Prerequisites checklist sidebar · Troubleshooting and Windows fallback links · "Next: Quickstart" CTA at end</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 3 — QUICKSTART
+══════════════════════════════════════════ -->
+<div class="screen" id="quickstart">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">Screen 3 — Critical Path</div>
+      <div class="screen-title">Quickstart Page</div>
+      <div class="screen-meta-row">
+        <span><strong>Purpose:</strong> Working simulation in under 5 minutes. Zero architecture explanation. Pure action.</span>
+        <span><strong>Primary action:</strong> Follow 4 steps → reach First Success checkpoint</span>
+      </div>
+    </div>
+    <div class="browser-wrap">
+      <div class="browser-bar">
+        <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
+        <div class="b-url">nsb.ucsc.edu/get-started/quickstart</div>
+      </div>
+      <div class="browser-body">
+        <div class="wf-nav">
+          <div class="wf-logo">NSB</div>
+          <div class="wf-nav-links">
+            <div class="wf-nav-link on">Get Started</div>
+            <div class="wf-nav-link">Docs</div>
+            <div class="wf-nav-link">Tutorials</div>
+          </div>
+          <div class="wf-nav-right"><div class="wf-btn-ghost">GitHub</div></div>
+        </div>
+        <div class="qs-topbar">
+          <div>
+            <div class="page-title">Quickstart</div>
+            <div class="page-subtitle">Run your first simulation. No prior NSB knowledge required.</div>
+          </div>
+          <div class="time-badge">~5 minutes</div>
+        </div>
+        <div class="qs-layout">
+          <div class="qs-main">
+            <!-- Step 1 -->
+            <div class="qs-step">
+              <div class="qs-step-head">
+                <div class="qs-step-n">1</div>
+                <div class="qs-step-title">Create your config file</div>
+              </div>
+              <p>Copy this exactly. You do not need to understand every field yet — that is what the Config Reference is for.</p>
+              <div class="code-block">
+                <div class="code-bar"><span>config.yaml</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+                <pre>simulator_mode: 1
+server_port: 5000
+endpoints:
+  - name: client1
+    port: 5001
+  - name: client2
+    port: 5002</pre>
+              </div>
+              <div class="verify">Save this as <code>config.yaml</code> in your current working directory.</div>
+            </div>
+            <!-- Step 2 -->
+            <div class="qs-step">
+              <div class="qs-step-head">
+                <div class="qs-step-n">2</div>
+                <div class="qs-step-title">Start the NSB server</div>
+              </div>
+              <p>Open a new terminal window and run:</p>
+              <div class="code-block">
+                <div class="code-bar"><span>terminal 1</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+                <pre>$ nsb-server --config config.yaml</pre>
+              </div>
+              <div class="verify">You should see: <strong>NSB Server listening on port 5000</strong>. Leave this terminal open.</div>
+              <div class="note">Port 5000 already in use? Change <code>server_port</code> in config.yaml. See port conflicts guide.</div>
+            </div>
+            <!-- Step 3 -->
+            <div class="qs-step">
+              <div class="qs-step-head">
+                <div class="qs-step-n">3</div>
+                <div class="qs-step-title">Run the example client</div>
+              </div>
+              <p>In a second terminal, inside the <code>nsb-examples/</code> directory:</p>
+              <div class="code-block">
+                <div class="code-bar"><span>terminal 2</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+                <pre>$ source nsb-env/bin/activate
+$ python examples/basic_client.py</pre>
+              </div>
+            </div>
+            <!-- Step 4 -->
+            <div class="qs-step">
+              <div class="qs-step-head">
+                <div class="qs-step-n">4</div>
+                <div class="qs-step-title">Confirm the simulation ran</div>
+              </div>
+              <p>You should see output like this in your terminal:</p>
+              <div class="code-block">
+                <div class="code-bar"><span>expected output</span></div>
+                <pre>  Connecting to NSB server at localhost:5000
+  client1 connected successfully (port 5001)
+  client2 connected successfully (port 5002)
+  Sending: Hello from client1 to client2
+  Sending: Hello from client2 to client1
+  Simulation complete. 10 messages exchanged in 0.34s</pre>
+              </div>
+            </div>
+
+            <!-- FIRST SUCCESS BANNER -->
+            <div class="success-banner">
+              <div class="success-ico">★</div>
+              <div>
+                <div class="success-label">First Success Checkpoint</div>
+                <div class="success-title">Your first NSB simulation is running.</div>
+                <div class="success-desc">Two clients connected through the NSB message server and exchanged 10 messages. That is the core of what NSB does — now scale it up to real simulator integrations.</div>
+              </div>
+            </div>
+
+            <div style="font-size:13px;font-weight:700;color:var(--g800);margin-bottom:12px">What's next?</div>
+            <div class="next-cards">
+              <div class="next-card" data-goto="tutorials">
+                <div class="next-card-tag">Tutorials</div>
+                <div class="next-card-title">Full end-to-end simulation</div>
+                <div class="next-card-desc">Server, two clients, real message exchange — explained step by step.</div>
+              </div>
+              <div class="next-card" data-goto="docs">
+                <div class="next-card-tag">Documentation</div>
+                <div class="next-card-title">Understand the config fields</div>
+                <div class="next-card-desc">Learn what simulator_mode, endpoints, and port ranges do.</div>
+              </div>
+              <div class="next-card" data-goto="contribute">
+                <div class="next-card-tag">Contribute</div>
+                <div class="next-card-title">Build a custom Python client</div>
+                <div class="next-card-desc">Extend NSB with your own simulator adapter.</div>
+              </div>
+            </div>
+          </div>
+          <!-- TOC -->
+          <div class="qs-toc-panel">
+            <div class="qs-toc-title">On this page</div>
+            <div class="qs-toc-item done"><div class="qs-toc-n">1</div>Create config file</div>
+            <div class="qs-toc-item done"><div class="qs-toc-n">2</div>Start the server</div>
+            <div class="qs-toc-item done"><div class="qs-toc-n">3</div>Run example client</div>
+            <div class="qs-toc-item done"><div class="qs-toc-n">4</div>Confirm simulation</div>
+            <div class="qs-toc-item done" style="margin-top:10px;border:1.5px solid var(--g700);border-radius:3px;padding:5px 7px">
+              <div class="qs-toc-n" style="background:var(--g800);color:var(--white);border-color:var(--g800)">★</div>
+              <strong>First Success</strong>
+            </div>
+          </div>
+        </div>
+        <div class="wf-footer">
+          <span class="wf-footer-brand">NSB — UC Santa Cruz OSPO</span>
+          <div class="wf-footer-links"><span class="wf-footer-link">GitHub</span><span class="wf-footer-link">Docs</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ann"><strong>Key elements:</strong> Time badge ("~5 minutes") · 4 numbered steps with copy-paste commands and verify hints · Expected terminal output block · <strong>First Success checkpoint banner (bold border, star icon)</strong> · "What's next?" 3-card strip · Sticky on-page TOC with step status</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 4 — DOCUMENTATION
+══════════════════════════════════════════ -->
+<div class="screen" id="docs">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">Screen 4</div>
+      <div class="screen-title">Documentation</div>
+      <div class="screen-meta-row">
+        <span><strong>Purpose:</strong> Reference material for users who have a working setup. Sidebar-driven layout.</span>
+        <span><strong>Primary action:</strong> Navigate sidebar → read reference page → copy config fields or API</span>
+      </div>
+    </div>
+    <div class="browser-wrap">
+      <div class="browser-bar">
+        <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
+        <div class="b-url">nsb.ucsc.edu/docs/config-reference</div>
+      </div>
+      <div class="browser-body">
+        <div class="wf-nav">
+          <div class="wf-logo">NSB</div>
+          <div class="wf-nav-links">
+            <div class="wf-nav-link">Get Started</div>
+            <div class="wf-nav-link on">Docs</div>
+            <div class="wf-nav-link">Tutorials</div>
+            <div class="wf-nav-link">Contribute</div>
+          </div>
+          <div class="wf-nav-right"><div class="wf-btn-ghost">GitHub</div></div>
+        </div>
+        <div class="docs-layout">
+          <div class="docs-sidebar">
+            <div class="doc-search">
+              <span class="doc-search-icon">S</span>
+              <input type="text" placeholder="Search docs...">
+            </div>
+            <div class="sb-group">Overview</div>
+            <div class="sb-link">Architecture</div>
+            <div class="sb-link">How NSB works</div>
+            <div class="sb-group">Configuration</div>
+            <div class="sb-link on">Config Reference</div>
+            <div class="sb-link" style="padding-left:26px;font-size:11px">simulator_mode</div>
+            <div class="sb-link" style="padding-left:26px;font-size:11px">endpoints</div>
+            <div class="sb-group">API Reference</div>
+            <div class="sb-link">Python Client API</div>
+            <div class="sb-link">C++ Client API</div>
+            <div class="sb-link">Message Protocol</div>
+            <div class="sb-group">Visualization</div>
+            <div class="sb-link">Real-Time View</div>
+            <div class="sb-link">Custom Displays</div>
+          </div>
+          <div class="docs-content">
+            <div class="breadcrumb">Docs / Configuration / Config Reference</div>
+            <div class="docs-h1">config.yaml Reference</div>
+            <div class="docs-meta">Last updated: March 2026 · <a href="#" style="color:var(--g400)">Edit this page</a></div>
+            <div class="docs-body">
+              <p>The <code>config.yaml</code> file is the primary configuration for the NSB message server. It controls simulator mode, endpoint definitions, port assignments, and logging behaviour.</p>
+              <h2>Full Example</h2>
+              <div class="code-block">
+                <div class="code-bar"><span>config.yaml</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+                <pre>simulator_mode: 1
+server_port: 5000
+log_level: INFO
+endpoints:
+  - name: client1
+    port: 5001
+  - name: client2
+    port: 5002</pre>
+              </div>
+              <h2>Field Reference</h2>
+              <table class="config-tbl">
+                <thead>
+                  <tr><th>Field</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>simulator_mode</code></td><td><span class="tag tag-req">required</span></td><td>—</td><td>1 = basic mode, 2 = ns-3 bridge, 3 = OMNeT++</td></tr>
+                  <tr><td><code>server_port</code></td><td><span class="tag tag-opt">optional</span></td><td>5000</td><td>Port the NSB server listens on for client connections</td></tr>
+                  <tr><td><code>log_level</code></td><td><span class="tag tag-opt">optional</span></td><td>INFO</td><td>Verbosity level: DEBUG, INFO, WARNING, ERROR</td></tr>
+                  <tr><td><code>endpoints</code></td><td><span class="tag tag-req">required</span></td><td>—</td><td>List of client endpoints — each requires a unique name and port</td></tr>
+                  <tr><td><code>endpoints[].name</code></td><td><span class="tag tag-req">required</span></td><td>—</td><td>Unique identifier used in message routing between clients</td></tr>
+                  <tr><td><code>endpoints[].port</code></td><td><span class="tag tag-req">required</span></td><td>—</td><td>Port this client listens on — must not conflict with other endpoints</td></tr>
+                </tbody>
+              </table>
+              <h2>Message Flow</h2>
+              <p>When a client sends a message, the NSB server receives it, looks up the target endpoint by name, and forwards it on the correct port. Clients never communicate directly — all traffic routes through the server.</p>
+              <div class="code-block">
+                <div class="code-bar"><span>python</span></div>
+                <pre>from nsb_client import NSBClient
+
+client = NSBClient("client1", server_port=5000)
+client.connect()
+
+# Send a message to client2
+client.send(to="client2", payload={"type": "PING", "seq": 1})
+
+# Receive a reply
+msg = client.recv(timeout=2.0)
+print(msg.payload)</pre>
+              </div>
+              <div class="docs-nav-strip">
+                <div class="docs-nav-link">← Architecture</div>
+                <div class="docs-nav-link">simulator_mode →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wf-footer">
+          <span class="wf-footer-brand">NSB — UC Santa Cruz OSPO</span>
+          <div class="wf-footer-links"><span class="wf-footer-link">GitHub</span><span class="wf-footer-link">License</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ann"><strong>Key elements:</strong> Sticky left sidebar with grouped nav (Overview / Config / API / Visualization) · Search box · Active state on current page · Breadcrumb · Field reference table (required/optional tags, types, defaults) · Code examples · Prev/Next navigation strip</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 5 — TUTORIALS
+══════════════════════════════════════════ -->
+<div class="screen" id="tutorials">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">Screen 5</div>
+      <div class="screen-title">Tutorials</div>
+      <div class="screen-meta-row">
+        <span><strong>Purpose:</strong> Progressive, goal-oriented guides beyond the Quickstart. Filterable by difficulty.</span>
+        <span><strong>Primary action:</strong> Filter by difficulty or topic, then select a tutorial</span>
+      </div>
+    </div>
+    <div class="browser-wrap">
+      <div class="browser-bar">
+        <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
+        <div class="b-url">nsb.ucsc.edu/tutorials</div>
+      </div>
+      <div class="browser-body">
+        <div class="wf-nav">
+          <div class="wf-logo">NSB</div>
+          <div class="wf-nav-links">
+            <div class="wf-nav-link">Get Started</div>
+            <div class="wf-nav-link">Docs</div>
+            <div class="wf-nav-link on">Tutorials</div>
+            <div class="wf-nav-link">Contribute</div>
+          </div>
+          <div class="wf-nav-right"><div class="wf-btn-ghost">GitHub</div></div>
+        </div>
+        <div class="page-header">
+          <div class="page-title">Tutorials</div>
+          <div class="page-subtitle">Step-by-step guides. Start at Beginner and work up, or jump to what you need.</div>
+        </div>
+        <div class="tut-body">
+          <div class="filter-row">
+            <button class="ftab active">All</button>
+            <button class="ftab">Beginner</button>
+            <button class="ftab">Intermediate</button>
+            <button class="ftab">Advanced</button>
+          </div>
+          <div class="tut-grid">
+            <div class="tut-card">
+              <div class="tut-thumb">DIAGRAM PLACEHOLDER</div>
+              <div class="tut-info">
+                <div class="tag tag-beginner">Beginner</div>
+                <div class="tut-title">Basic End-to-End Simulation</div>
+                <div class="tut-desc">Set up a server and two clients, exchange messages, and inspect output. Foundation for all other tutorials.</div>
+                <div class="tut-foot"><div class="tut-time">15 min</div><button class="btn-fill" style="font-size:11px;padding:5px 12px">Start</button></div>
+              </div>
+            </div>
+            <div class="tut-card">
+              <div class="tut-thumb">DIAGRAM PLACEHOLDER</div>
+              <div class="tut-info">
+                <div class="tag tag-beginner">Beginner</div>
+                <div class="tut-title">Custom Python Client</div>
+                <div class="tut-desc">Build a Python client from scratch using the NSB client library. Send structured messages and handle responses.</div>
+                <div class="tut-foot"><div class="tut-time">20 min</div><button class="btn-fill" style="font-size:11px;padding:5px 12px">Start</button></div>
+              </div>
+            </div>
+            <div class="tut-card">
+              <div class="tut-thumb">DIAGRAM PLACEHOLDER</div>
+              <div class="tut-info">
+                <div class="tag tag-intermediate">Intermediate</div>
+                <div class="tut-title">ns-3 Integration</div>
+                <div class="tut-desc">Connect an ns-3 simulation to NSB using the bridge adapter. Configure simulator_mode and handle event callbacks.</div>
+                <div class="tut-foot"><div class="tut-time">45 min</div><button class="btn-fill" style="font-size:11px;padding:5px 12px">Start</button></div>
+              </div>
+            </div>
+            <div class="tut-card">
+              <div class="tut-thumb">DIAGRAM PLACEHOLDER</div>
+              <div class="tut-info">
+                <div class="tag tag-intermediate">Intermediate</div>
+                <div class="tut-title">Real-Time Visualization</div>
+                <div class="tut-desc">Enable the live topology view and customize the metrics displayed during simulation.</div>
+                <div class="tut-foot"><div class="tut-time">30 min</div><button class="btn-fill" style="font-size:11px;padding:5px 12px">Start</button></div>
+              </div>
+            </div>
+            <div class="tut-card">
+              <div class="tut-thumb">DIAGRAM PLACEHOLDER</div>
+              <div class="tut-info">
+                <div class="tag tag-advanced">Advanced</div>
+                <div class="tut-title">OMNeT++ Bridge</div>
+                <div class="tut-desc">Integrate NSB with OMNeT++ using the C++ bridge library. Handle complex message types and time synchronization.</div>
+                <div class="tut-foot"><div class="tut-time">60 min</div><button class="btn-fill" style="font-size:11px;padding:5px 12px">Start</button></div>
+              </div>
+            </div>
+            <div class="tut-card">
+              <div class="tut-thumb">DIAGRAM PLACEHOLDER</div>
+              <div class="tut-info">
+                <div class="tag tag-advanced">Advanced</div>
+                <div class="tut-title">Custom Message Protocol</div>
+                <div class="tut-desc">Define custom message types, implement serialization, and build typed handlers for complex simulation scenarios.</div>
+                <div class="tut-foot"><div class="tut-time">50 min</div><button class="btn-fill" style="font-size:11px;padding:5px 12px">Start</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wf-footer">
+          <span class="wf-footer-brand">NSB — UC Santa Cruz OSPO</span>
+          <div class="wf-footer-links"><span class="wf-footer-link">GitHub</span><span class="wf-footer-link">License</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ann"><strong>Key elements:</strong> Difficulty filter tabs (All / Beginner / Intermediate / Advanced) · 3-col card grid with difficulty badge, title, description, time estimate, and Start CTA · Diagram placeholder in card thumbnail · Topics: Basic End-to-End, Custom Python Client, ns-3 Integration, Visualization, OMNeT++, Custom Protocol</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 6 — CONTRIBUTE
+══════════════════════════════════════════ -->
+<div class="screen" id="contribute">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">Screen 6</div>
+      <div class="screen-title">Contribute</div>
+      <div class="screen-meta-row">
+        <span><strong>Purpose:</strong> Three distinct contribution paths. Dev setup guide. Reduce first-PR friction.</span>
+        <span><strong>Primary action:</strong> Identify path, follow guide, open first issue or PR</span>
+      </div>
+    </div>
+    <div class="browser-wrap">
+      <div class="browser-bar">
+        <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
+        <div class="b-url">nsb.ucsc.edu/contribute</div>
+      </div>
+      <div class="browser-body">
+        <div class="wf-nav">
+          <div class="wf-logo">NSB</div>
+          <div class="wf-nav-links">
+            <div class="wf-nav-link">Get Started</div>
+            <div class="wf-nav-link">Docs</div>
+            <div class="wf-nav-link">Tutorials</div>
+            <div class="wf-nav-link on">Contribute</div>
+          </div>
+          <div class="wf-nav-right"><div class="wf-btn-ghost">GitHub</div></div>
+        </div>
+        <div class="page-header">
+          <div class="page-title">Contribute to NSB</div>
+          <div class="page-subtitle">NSB is open source under UCSC OSPO. All contribution types are welcome.</div>
+        </div>
+        <div class="contrib-body">
+          <div class="path-cards">
+            <div class="path-card">
+              <div class="path-icon">BUG</div>
+              <div class="path-title">Report a Bug</div>
+              <div class="path-desc">Found something broken? Open an issue on GitHub with reproduction steps. Check existing issues first to avoid duplicates.</div>
+              <a class="path-link">Open an issue on GitHub →</a>
+            </div>
+            <div class="path-card">
+              <div class="path-icon">DEV</div>
+              <div class="path-title">Contribute Code</div>
+              <div class="path-desc">Fix a bug, add a feature, or improve test coverage. Start with the Dev Setup guide below, then pick a Good First Issue.</div>
+              <a class="path-link">Dev setup guide →</a>
+            </div>
+            <div class="path-card">
+              <div class="path-icon">DOC</div>
+              <div class="path-title">Improve Documentation</div>
+              <div class="path-desc">Found a gap in the docs? Every page has an "Edit this page" link. Documentation PRs are always welcome.</div>
+              <a class="path-link">Edit a doc page →</a>
+            </div>
+          </div>
+
+          <div class="dev-block">
+            <h3>Local Development Setup</h3>
+            <div class="dev-step"><div class="dev-num">1</div><p>Fork and clone: <code>git clone https://github.com/your-fork/nsb.git && cd nsb</code></p></div>
+            <div class="dev-step"><div class="dev-num">2</div><p>Create a venv and install dev dependencies: <code>pip install -e ".[dev]"</code></p></div>
+            <div class="dev-step"><div class="dev-num">3</div><p>Run the test suite: <code>pytest tests/ -v</code> — all tests should pass before opening a PR.</p></div>
+            <div class="dev-step"><div class="dev-num">4</div><p>Create a branch, make your changes, and open a PR against <code>main</code>.</p></div>
+          </div>
+
+          <div class="issues-block">
+            <h3>Good First Issues</h3>
+            <div class="issues-sub">Curated for new contributors — updated weekly from GitHub.</div>
+            <div class="issue-row"><div class="issue-dot"></div><div class="issue-title">Add Windows WSL2 install verification step to docs</div><span class="issue-tag-badge">good first issue</span></div>
+            <div class="issue-row"><div class="issue-dot"></div><div class="issue-title">Write unit tests for NSBClient.send() timeout handling</div><span class="issue-tag-badge">good first issue</span></div>
+            <div class="issue-row"><div class="issue-dot"></div><div class="issue-title">Add error message when config.yaml is missing required fields</div><span class="issue-tag-badge">good first issue</span></div>
+            <div class="issue-row"><div class="issue-dot"></div><div class="issue-title">Improve port conflict error message to suggest alternatives</div><span class="issue-tag-badge">good first issue</span></div>
+          </div>
+        </div>
+        <div class="wf-footer">
+          <span class="wf-footer-brand">NSB — UC Santa Cruz OSPO</span>
+          <div class="wf-footer-links"><span class="wf-footer-link">GitHub</span><span class="wf-footer-link">License</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ann"><strong>Key elements:</strong> 3 contribution path cards (Bug / Code / Docs) with labelled icons and action links · Connected dev setup steps with inline code · Good First Issues list with GitHub badge and hover state</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 7 — COMMUNITY / ABOUT
+══════════════════════════════════════════ -->
+<div class="screen" id="community">
+  <div class="screen-wrap">
+    <div class="screen-desc-block">
+      <div class="screen-tag">Screen 7</div>
+      <div class="screen-title">Community and About</div>
+      <div class="screen-meta-row">
+        <span><strong>Purpose:</strong> Community channels, project background, team. Build trust with new users.</span>
+        <span><strong>Primary action:</strong> Find GitHub Discussions or mailing list, join community</span>
+      </div>
+    </div>
+    <div class="browser-wrap">
+      <div class="browser-bar">
+        <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
+        <div class="b-url">nsb.ucsc.edu/community</div>
+      </div>
+      <div class="browser-body">
+        <div class="wf-nav">
+          <div class="wf-logo">NSB</div>
+          <div class="wf-nav-links">
+            <div class="wf-nav-link">Get Started</div>
+            <div class="wf-nav-link">Docs</div>
+            <div class="wf-nav-link">Tutorials</div>
+            <div class="wf-nav-link">Contribute</div>
+            <div class="wf-nav-link on">Community</div>
+          </div>
+          <div class="wf-nav-right"><div class="wf-btn-ghost">GitHub</div></div>
+        </div>
+        <div class="page-header">
+          <div class="page-title">Community and About</div>
+          <div class="page-subtitle">Where to ask questions, follow development, and meet the team.</div>
+        </div>
+        <div class="comm-body">
+          <div class="comm-col">
+            <h3>Community Channels</h3>
+            <div class="sub">Get help, share experiments, and follow NSB development.</div>
+            <div class="channel">
+              <div class="ch-icon">GH</div>
+              <div><div class="ch-name">GitHub Discussions</div><div class="ch-desc">Ask questions, share use cases, and discuss ideas with maintainers and users.</div></div>
+              <div class="ch-arrow">→</div>
+            </div>
+            <div class="channel">
+              <div class="ch-icon">GH</div>
+              <div><div class="ch-name">GitHub Issues</div><div class="ch-desc">Report bugs, request features, and track project progress.</div></div>
+              <div class="ch-arrow">→</div>
+            </div>
+            <div class="channel">
+              <div class="ch-icon">@</div>
+              <div><div class="ch-name">Mailing List</div><div class="ch-desc"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7a140918571b1414150f14191f3a0f190919541f1e0f">[email&#160;protected]</a> — release notes and project announcements.</div></div>
+              <div class="ch-arrow">→</div>
+            </div>
+          </div>
+          <div class="comm-col">
+            <h3>About NSB</h3>
+            <div class="sub">Origin, goals, and the team behind the project.</div>
+            <div class="about-card">
+              <p>Network Simulation Bridge was created at UC Santa Cruz as part of the Open Source Program Office (UCSC OSPO). The goal is to lower the barrier for researchers and students who want to use mature network simulators without complex integration plumbing.</p>
+              <p>NSB is actively developed and welcomes contributors at all levels. The GSoC 2026 program is bringing major improvements to documentation, onboarding, and the website.</p>
+              <span class="ospo-tag">UCSC OSPO Project — GSoC 2026</span>
+            </div>
+            <div style="margin-top:20px">
+              <div style="font-size:12px;font-weight:700;color:var(--g700);margin-bottom:12px">Core Team</div>
+              <div class="team-row">
+                <div class="member"><div class="m-avatar">PL</div><div class="m-name">Project Lead</div><div class="m-role">Advisor</div></div>
+                <div class="member"><div class="m-avatar">CD</div><div class="m-name">Core Dev</div><div class="m-role">Developer</div></div>
+                <div class="member"><div class="m-avatar">CD</div><div class="m-name">Core Dev</div><div class="m-role">Developer</div></div>
+                <div class="member"><div class="m-avatar">YOU</div><div class="m-name">GSoC 2026</div><div class="m-role">Contributor</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wf-footer">
+          <span class="wf-footer-brand">NSB — UC Santa Cruz OSPO</span>
+          <div class="wf-footer-links"><span class="wf-footer-link">GitHub</span><span class="wf-footer-link">License</span><span class="wf-footer-link">Contact</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ann"><strong>Key elements:</strong> Two-column layout — community channels (left) + project about (right) · Channel cards with icon, name, description, arrow link · UCSC OSPO affiliation tag · Team member grid with initials avatars and roles</div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+function navigate(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.left-nav-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.meta-pill').forEach(p => p.classList.remove('active'));
+  const s = document.getElementById(id);
+  if (s) { s.classList.add('active'); document.querySelector('.main').scrollTo(0, 0); window.scrollTo(0,0); }
+  document.querySelectorAll('.left-nav-item').forEach(i => { if (i.dataset.s === id) i.classList.add('active'); });
+  document.querySelectorAll('.meta-pill').forEach(p => { if (p.dataset.s === id) p.classList.add('active'); });
+}
+
+// Sidebar nav
+document.querySelectorAll('.left-nav-item').forEach(item => {
+  item.addEventListener('click', () => navigate(item.dataset.s));
+});
+
+// Meta bar pills
+document.querySelectorAll('.meta-pill').forEach(pill => {
+  pill.addEventListener('click', () => navigate(pill.dataset.s));
+});
+
+// In-screen navigation buttons
+document.querySelectorAll('[data-goto]').forEach(el => {
+  el.addEventListener('click', () => navigate(el.dataset.goto));
+});
+
+// OS tabs
+document.querySelectorAll('.os-tab').forEach(t => {
+  t.addEventListener('click', function() {
+    this.closest('.os-tabs').querySelectorAll('.os-tab').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Difficulty filter tabs
+document.querySelectorAll('.ftab').forEach(t => {
+  t.addEventListener('click', function() {
+    document.querySelectorAll('.ftab').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Copy buttons
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre');
+  if (!pre) return;
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    const orig = btn.innerText;
+    btn.innerText = 'Copied!';
+    setTimeout(() => { btn.innerText = orig; }, 1500);
+  }).catch(() => {
+    btn.innerText = 'Failed';
+    setTimeout(() => { btn.innerText = 'Copy'; }, 1500);
+  });
+}
+</script></body></html>
